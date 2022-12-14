@@ -21,5 +21,12 @@ public class Main {
         myEmployeeBook.changeEmployeeDepartment("Иванов Иван Иванович", 4);
         myEmployeeBook.changeEmployeeSalary("          Сидоров Иван     Иванович", 20_000);
         System.out.println(myEmployeeBook);
+        myEmployeeBook.addNewEmployee("Василий Иванович", 3, 10_000);
+
+
+        System.out.println(myEmployeeBook);
+        if (null != myEmployeeBook.findEmployeeWithMinSalaryInDepartment(5)) {
+            System.out.println("Максимальная ЗП:    "+myEmployeeBook.findEmployeeWithMinSalaryInDepartment(3));
+        }
     }// main
 }// Main

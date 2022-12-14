@@ -54,7 +54,7 @@ public class EmployeeBook {
             return false;
         }
         for (int i =0; i<employees.length;i++) {
-            if (employees[i].getId() == id) {
+            if (employees[i]!=null && employees[i].getId() == id) {
                 System.out.println("Сотрудник \""+employees[i].getFullName()+"\" успешно удален");
                 employees[i]=null;
                 return true;
@@ -120,9 +120,11 @@ public class EmployeeBook {
 
     @Override public String toString() {
         StringBuilder resultString = new StringBuilder("");
+        String format = "%" + maxLengthInName() + "s";
         for (Employee employee : employees) {
             if (employee!=null) {
-                resultString.append(employee).append("\n");
+                resultString.append(String.format("id_%02d ---- Департамент %d ---- Сотрудник: "+format+" ---- Зарплата: %,10d",employee.getId(),
+                employee.getDepartment(),employee.getFullName(),employee.getSalary())).append("\n");
             }
         }
         return resultString.toString();
@@ -173,9 +175,10 @@ public class EmployeeBook {
     }
 
     public void printAllEmployees() {
+        String s = "%"+maxLengthInName()+"s";
         for (Employee employee : employees) {
             if (employee != null) {
-                System.out.printf("%35s \n",employee.getFullName());
+                System.out.printf(s+"\n",employee.getFullName());
             }
         }
     }
@@ -185,12 +188,81 @@ public class EmployeeBook {
             printError("Error: Процент идексации запрплаты не может быть отрицательным");
             return;
         }
-        int rate = 1 + (percent/100);
+        double rate = 1 + ((double)percent/100);
         for (Employee employee : employees) {
             if (employee != null) {
-                employee.setSalary(employee.getSalary()*rate);
+                employee.setSalary((int) (employee.getSalary()*rate));
             }
         }
+    } // indexSalaryPerPercent
+    private int maxLengthInName() { //// Максимальная длинна строки с именем
+        int lenght = 1;
+        for (Employee employee : employees) {
+            if (employee!=null && employee.getFullName().length()>lenght) {
+                lenght=employee.getFullName().length();
+            }
+        }
+        return lenght;
     }
+
+    public void findAllEmployeesWithLowerSalary(int salary) {  ////////// сотрудники с меньшей зп, чем
+        if (salary < 0) {
+            printError("Error: зарплата не может быть отрицательной");
+            return;
+        }
+        System.out.println("Сотрудники с зарпалатой меньше, чем " + salary+" :");
+        for (Employee employee : employees) {
+            if (employee != null && employee.getSalary() < salary) {
+                System.out.println(employee);
+            }
+        }
+    }// findALlEmployeesWithLowerSalary
+
+    public void findAllEmployeesWithHigherSalary(int salary) { /////// сотрудники с большей зп, чем
+        if (salary < 0) {
+            printError("Error: зарплата не может быть отрицательной");
+            return;
+        }
+        System.out.println("Сотрудники с зарпалатой большей, чем " + salary+" :");
+        for (Employee employee : employees) {
+            if (employee != null && employee.getSalary() > salary) {
+                System.out.println(employee);
+            }
+        }
+    } ////// findAllEmployeesWithHigherSalary
+    public Employee findEmployeeWithMinSalaryInDepartment(int department) { //// поиск сотрудника с Минимальной зп
+        int minSalary = Integer.MAX_VALUE;
+        Employee employeeWithMinSalary = null;
+
+        if (department<1 || department>5) {
+            printError("Некорректный номер департамента");
+            return employeeWithMinSalary;
+        }
+
+        for (Employee employee : employees) {
+            if (employee!=null && employee.getDepartment()==department && employee.getSalary()<minSalary) {
+                minSalary = employee.getSalary();
+                employeeWithMinSalary=employee;
+            }
+        }//for
+        return employeeWithMinSalary;
+    } //// findEmployeeWithMinSalaryInDepartment
+    public Employee findEmployeeWithMaxSalaryInDepartment(int department) { //// поиск сотрудника с МАКСИМАЛЬНОЙ зп
+        int maxSalary = Integer.MIN_VALUE;
+        Employee employeeWithMaxSalary = null;
+
+        if (department<1 || department>5) {
+            printError("Некорректный номер департамента");
+            return employeeWithMaxSalary;
+        }
+
+        for (Employee employee : employees) {
+            if ((employee!=null && employee.getDepartment()==department) && employee.getSalary()>maxSalary) {
+                maxSalary = employee.getSalary();
+                employeeWithMaxSalary=employee;
+            }
+        }//for
+        return employeeWithMaxSalary;
+    } //// findEmployeeWithMaxSalaryInDepartment
 } //  EmployeeBook
 
