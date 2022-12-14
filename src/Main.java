@@ -25,8 +25,7 @@ public class Main {
 
 
         System.out.println(myEmployeeBook);
-        if (null != myEmployeeBook.findEmployeeWithMinSalaryInDepartment(5)) {
-            System.out.println("Максимальная ЗП:    "+myEmployeeBook.findEmployeeWithMinSalaryInDepartment(3));
-        }
+        myEmployeeBook.indexSalaryPerPercentInDepartment(1,10);
+        myEmployeeBook.printAllEmployeesInDepartment(1);
     }// main
 }// Main

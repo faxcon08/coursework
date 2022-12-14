@@ -234,8 +234,7 @@ public class EmployeeBook {
         int minSalary = Integer.MAX_VALUE;
         Employee employeeWithMinSalary = null;
 
-        if (department<1 || department>5) {
-            printError("Некорректный номер департамента");
+        if (!checkDepartment(department)) {
             return employeeWithMinSalary;
         }
 
@@ -251,8 +250,7 @@ public class EmployeeBook {
         int maxSalary = Integer.MIN_VALUE;
         Employee employeeWithMaxSalary = null;
 
-        if (department<1 || department>5) {
-            printError("Некорректный номер департамента");
+        if (!checkDepartment(department)) {
             return employeeWithMaxSalary;
         }
 
@@ -264,5 +262,67 @@ public class EmployeeBook {
         }//for
         return employeeWithMaxSalary;
     } //// findEmployeeWithMaxSalaryInDepartment
+
+    public int getTotalSalaryInDepartment(int department) {
+        if (!checkDepartment(department)) {
+            return -1;
+        }
+        int totalSalary = 0;
+        for (Employee employee : employees) {
+            if(employee!=null && employee.getDepartment()==department)
+                totalSalary+=employee.getSalary();
+        }
+        return totalSalary;
+    }
+    public int getAverageSalaryInDepartment(int department) {
+        if (!checkDepartment(department)) {
+            return -1;
+        }
+        int averageSalaryInDepartment = this.getTotalSalaryInDepartment(department);
+        int employeeAmountInDepartment = 0;
+        for (Employee employee : employees) {
+            if(employee!=null && employee.getDepartment()==department)
+                employeeAmountInDepartment++;
+        }
+        if (employeeAmountInDepartment==0)
+            return 0;
+        return averageSalaryInDepartment/employeeAmountInDepartment;
+    }
+
+    public void indexSalaryPerPercentInDepartment(int department, int percent) {
+        if (!checkDepartment(department)) {
+            return;
+        }
+        if (percent < 0) {
+            printError("Error: Процент идексации запрплаты не может быть отрицательным");
+            return;
+        }
+        double rate = 1 + ((double)percent/100);
+        for (Employee employee : employees) {
+            if (employee != null && employee.getDepartment()==department) {
+                employee.setSalary((int) (employee.getSalary()*rate));
+            }
+        }
+    } // indexSalaryPerPercentInDepartment
+    public void printAllEmployeesInDepartment(int department) {
+        if (!checkDepartment(department)) {
+            return;
+        }
+        String s = "%"+maxLengthInName()+"s";
+        System.out.println("Сотрудники департамента #"+department);
+        for (Employee employee : employees) {
+            if (employee != null && employee.getDepartment()==department) {
+                System.out.printf(s+"\n",employee.getFullName());
+            }
+        }
+    }
+
+    private boolean checkDepartment(int department) {
+        if (department<1 || department>5) {
+            printError("Некорректный номер департамента");
+            return false;
+        }
+        return true;
+    }
 } //  EmployeeBook
 
