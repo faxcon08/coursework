@@ -16,19 +16,20 @@ public class EmployeeBook {
 
         for (Employee employee : employees) { // проверяем на совпадение с именем
             if (employee != null && employee.equals(newEmployee)) {
-                printError("Error: Сотрудника с таким же ФИО уже есть");
+                printError("Error: Сотрудника с таким же ФИО уже есть - "+fullName);
                 return false;
             }
         }// for
 
         for (int i = 0; i<employees.length;i++) { //// Есть ли место в массиве ?
             if (employees[i] == null) {
+                //System.out.println("Добавляем сотрудника" + fullName);/////////////////////////////////////////
                 employees[i] = newEmployee;
                 return true;
             }
         }// for
 
-        printError("Error: Все места уже заняты. Невозможно добавить нового сотрудника");
+        printError("Error: Все места уже заняты. Невозможно добавить сотрудника: "+fullName);
         return  false;
         } // addNewEmployee
 
@@ -178,7 +179,7 @@ public class EmployeeBook {
         String s = "%"+maxLengthInName()+"s";
         for (Employee employee : employees) {
             if (employee != null) {
-                System.out.printf(s+"\n",employee.getFullName());
+                System.out.printf(s+" ---- %12d департамент %2d\n",employee.getFullName(),employee.getSalary(),employee.getDepartment());
             }
         }
     }
@@ -309,10 +310,10 @@ public class EmployeeBook {
             return;
         }
         String s = "%"+maxLengthInName()+"s";
-        System.out.println("Сотрудники департамента #"+department);
+        System.out.println("Сотрудники департамента #"+department+":");
         for (Employee employee : employees) {
             if (employee != null && employee.getDepartment()==department) {
-                System.out.printf(s+"\n",employee.getFullName());
+                System.out.printf(s+" ---- %d\n",employee.getFullName(),employee.getSalary());
             }
         }
     }
